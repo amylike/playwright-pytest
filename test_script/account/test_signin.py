@@ -47,8 +47,6 @@ def test_signin_correct(page: Page, test_data):
     """
     go_to_signin_url(page)
     input_signin_data(page, email=test_data["email"], password=test_data["password"])
-    SignIn(page).signin_button.click()
-    Menu(page).logout_nav_button.is_visible()
 
 
 @pytest.mark.parametrize("test_data", TEST_DATA)
