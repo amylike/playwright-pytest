@@ -16,7 +16,6 @@ from test_script.account.conftest import input_signin_data
 
 def go_to_product_url(page):
     # Products 페이지로 이동
-    ㅔㄱ
     page.goto(Path.PRODUCTS_URL)
 
 

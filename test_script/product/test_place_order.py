@@ -74,7 +74,6 @@ def test_place_order(page: Page, test_data):
         card_expiry_year=test_data["card_expiry_year"],
     )
     ProductOrder(page).complete_payment_button.click()
-
     assert ProductOrder(page).confirm_order_text.text_content() == "Order Placed!"
 
     download_invoice(page, total_purchase_amount)
