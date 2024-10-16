@@ -1,12 +1,10 @@
 from playwright.sync_api import Page
 
 
-class ProductPage:
+class ProductList:
     def __init__(self, page: Page):
         self.page = page
-        self.search_bar_input = page.locator("[id='search_product']")
-        self.search_submit_button = page.locator("[id='submit_search']")
-        self.product_info_elements = page.locator(
+        self.product_title_texts = page.locator(
             "//div[contains(@class, 'productinfo')]/p"
         )
         self.view_product_buttons = page.locator(
@@ -15,23 +13,30 @@ class ProductPage:
         self.first_view_product_button = page.locator(
             "(//a[contains(text(), 'View Product')])[1]"
         )
-        self.add_to_cart_button = page.locator(
+        self.random_add_to_cart_button = page.locator(
             "(//a[contains(@class, 'add-to-cart')])[5]"
         )
+        self.random_product_title_text = page.locator(
+            "(//div[@class='productinfo text-center']/p)[3]"
+        )
+        self.category_title_text = page.locator("//h2[@class='title text-center']")
 
 
-class ProductDetail:
+class ProductDetailPage:
     def __init__(self, page: Page):
         self.page = page
-        self.product_title = page.locator("//div[@class='product-information']/h2")
+        self.product_title_text = page.locator("//div[@class='product-information']/h2")
         self.add_to_cart_button = page.locator("//button[contains(@class, 'cart')]")
+        self.product_quantity_input = page.locator("//input[@id='quantity']")
 
 
 class ConfirmModal:
     def __init__(self, page: Page):
         self.page = page
         self.confirmed_modal = page.locator("[class='modal-dialog modal-confirm']")
-        self.modal_added_title = page.locator("//h4[contains(text(), 'Added!')]")
+        self.modal_product_added_title_text = page.locator(
+            "//h4[contains(text(), 'Added!')]"
+        )
         self.close_modal_button = page.locator(
             "//button[contains(@class, 'btn-success')]"
         )
@@ -45,12 +50,14 @@ class ProductOrder:
         self.page = page
         self.add_product_01_button = page.locator("(//a[@data-product-id='21'])[1]")
         self.add_product_02_button = page.locator("(//a[@data-product-id='43'])[1]")
-        self.proceed_order_button = page.locator("//a[text()='Proceed To Checkout']")
+        self.proceed_to_checkout_button = page.locator(
+            "//a[text()='Proceed To Checkout']"
+        )
 
-        self.check_signin_button = page.locator("//u[text()='Register / Login']")
+        self.register_or_login_button = page.locator("//u[text()='Register / Login']")
 
         self.place_order_button = page.locator("//a[@href='/payment']")
-        self.message_input = page.locator("//textarea[@name='message']")
+        self.order_message_input = page.locator("//textarea[@name='message']")
         self.card_name_input = page.locator("[data-qa='name-on-card']")
         self.card_number_input = page.locator("[data-qa='card-number']")
         self.card_cvc_input = page.locator("[data-qa='cvc']")
@@ -61,8 +68,20 @@ class ProductOrder:
         self.confirm_order_text = page.locator("[data-qa='order-placed']")
         self.download_invoice_button = page.locator("//a[text()='Download Invoice']")
 
-    def get_by_text(self, num: str):
-        element = self.page.locator(
-            f"(//a[@data-product-id='{num}'])[1]/preceding-sibling::h2"
-        )
-        return element
+
+class SidePanel:
+    def __init__(self, page: Page):
+        self.page = page
+        self.search_input = page.locator("[id='search_product']")
+        self.search_button = page.locator("[id='submit_search']")
+        self.men_category_button = page.locator("//a[@href='#Men']")
+        self.jeans_sub_category_button = page.locator("//a[contains(text(), 'Jeans')]")
+
+
+class CartPage:
+    def __init__(self, page: Page):
+        self.page = page
+        self.product_title_text = page.locator("//table[@id='cart_info_table']//h4/a")
+        self.remove_item_button = page.locator("//a[@class='cart_quantity_delete']")
+        self.empty_cart_message_text = page.locator("[id='empty_cart']")
+        self.product_quantity_text = page.locator("//td[@class='cart_quantity']/button")

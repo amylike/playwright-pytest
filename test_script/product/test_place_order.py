@@ -6,14 +6,13 @@ from page_objects.locators.products_locators import (
     ProductOrder,
 )
 from test_script.product.conftest import (
-    go_to_product_url,
-    search_keyword,
     download_invoice,
     add_to_cart_with_info,
     get_info_from_cart,
     input_card_data,
     check_signin_before_order,
     calculate_total_price,
+    search_items,
 )
 
 TEST_DATA = [
@@ -33,7 +32,7 @@ TEST_DATA = [
 
 
 @pytest.mark.parametrize("test_data", TEST_DATA)
-def test_place_order(page: Page, test_data):
+def test_place_order(page: Page, test_data: dict):
     """
     시나리오: 사용자가 장바구니에서 제품을 주문한다.
     1. 특정 키워드를 검색하여 제품을 장바구니에 추가한다.
@@ -42,8 +41,7 @@ def test_place_order(page: Page, test_data):
     4. 인보이스를 다운로드하여 결제 금액과 비교한다.
     """
     # 특정 키워드를 검색하여 제품을 장바구니에 추가
-    go_to_product_url(page)
-    search_keyword(page, test_data["keyword"])
+    search_items(page, test_data)
     product_info_list = []
     for product_number in test_data["product_numbers"]:
         product_info_list.append(add_to_cart_with_info(page, product_number))
@@ -61,7 +59,7 @@ def test_place_order(page: Page, test_data):
     # 로그인 후 주문 페이지로 이동
     check_signin_before_order(page, test_data["email"], test_data["password"])
 
-    ProductOrder(page).message_input.fill(test_data["message"])
+    ProductOrder(page).order_message_input.fill(test_data["message"])
     ProductOrder(page).place_order_button.click()
 
     # 카드 정보 입력하여 결제

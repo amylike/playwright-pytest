@@ -38,7 +38,7 @@ def test_signin_incorrect(page: Page):
 
 
 @pytest.mark.parametrize("test_data", TEST_DATA)
-def test_signin_correct(page: Page, test_data):
+def test_signin_correct(page: Page, test_data: dict):
     """
     시나리오: 사용자가 정상적인 정보로 로그인한다.
     1. Signup/login 페이지로 이동한다.
@@ -50,9 +50,9 @@ def test_signin_correct(page: Page, test_data):
 
 
 @pytest.mark.parametrize("test_data", TEST_DATA)
-def test_signout(page: Page, test_data):
+def test_signout(page: Page, test_data: dict):
     """
-    시나리오: 사용자가 로그아웃한다.
+    시나리오: 로그인 한 사용자가 로그아웃한다.
     1. 사용자가 로그인한다.
     2. 사용자가 로그아웃에 성공하여, 메뉴바에서 로그인 버튼이 나타난다.
     """

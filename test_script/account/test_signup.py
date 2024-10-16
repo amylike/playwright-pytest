@@ -27,10 +27,10 @@ TEST_DATA = [
 
 
 @pytest.mark.parametrize("test_data", TEST_DATA)
-def test_signup_account(page: Page, test_data):
+def test_signup_account(page: Page, test_data: dict):
     """
     시나리오: 사용자가 신규로 회원가입한다.
-    1. Signup/login 페이지로 이동한다.
+    1. Signup/Login 페이지로 이동한다.
     2. Name과 Email을 입력하여 회원가입 페이지로 이동한다.
     3. 계정 정보와 주소 정보를 입력하여 회원가입한다.
     """
@@ -52,7 +52,6 @@ def test_signup_account(page: Page, test_data):
     assert SignUp(page).email_input.input_value() == new_email
     SignUp(page).email_input.is_disabled()
     SignUp(page).password_input.fill(generated_password)
-    # TODO:로그인 페이지에서 name, email 입력하고 회원가입 페이지에서 해당 정보가 나타는지를 체크하는 것도 분리할지 결정
 
     input_account_data(
         page,
@@ -60,9 +59,12 @@ def test_signup_account(page: Page, test_data):
         month=test_data["month"],
         year=test_data["year"],
         newsletter=test_data["newsletter"],
+        offer=False,
+        company=None,
         first_name=test_data["first_name"],
         last_name=test_data["last_name"],
         address_01=test_data["address_01"],
+        address_02=None,
         country=test_data["country"],
         state=test_data["state"],
         city=test_data["city"],
@@ -71,3 +73,6 @@ def test_signup_account(page: Page, test_data):
     )
     SignUp(page).create_account_button.click()
     SignUp(page).account_created_text.is_visible()
+
+
+# TODO: 더 다양한 조합으로 회원 정보를 입력하여 회원 가입하는 시나리오 추가.
