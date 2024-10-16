@@ -23,7 +23,6 @@ class SignUp:
         self.password_input = page.locator("[data-qa='password']")
         self.signup_button = page.locator("[data-qa='signup-button']")
         self.select_day_dropdown = page.locator("[data-qa='days']")
-        # self.select_day_input = pag
         self.select_month_dropdown = page.locator("[data-qa='months']")
         self.select_year_dropdown = page.locator("[data-qa='years']")
         self.signup_newsletter_checkbox = page.locator("[id='newsletter']")

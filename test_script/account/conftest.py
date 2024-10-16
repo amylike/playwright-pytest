@@ -1,21 +1,21 @@
 from playwright.sync_api import Page
+from typing import Optional
 
 from page_objects.locators.common_locators import Menu
 from page_objects.locators.users_locators import SignUp, SignIn
 from page_objects.path import Path
 
 
-def go_to_main_url(page):
-    # 메인 페이지로 이동
+def go_to_main_url(page: Page):
     page.goto(Path.BASE_URL)
 
 
-def go_to_signin_url(page):
+def go_to_signin_url(page: Page):
     go_to_main_url(page)
     Menu(page).account_nav_button.click()
 
 
-def input_signin_data(page: Page, email=None, password=None):
+def input_signin_data(page: Page, email: str, password: str):
     SignIn(page).email_input.fill(email)
     SignIn(page).password_input.fill(password)
     SignIn(page).signin_button.click()
@@ -24,22 +24,23 @@ def input_signin_data(page: Page, email=None, password=None):
 
 def input_account_data(
     page: Page,
-    day=None,
-    month=None,
-    year=None,
-    newsletter=None,
-    offer=None,
-    first_name=None,
-    last_name=None,
-    company=None,
-    address_01=None,
-    address_02=None,
-    country=None,
-    state=None,
-    city=None,
-    zipcode=None,
-    mobile_number=None,
+    day: str,
+    month: str,
+    year: str,
+    newsletter: Optional[bool],
+    offer: Optional[bool],
+    first_name: str,
+    last_name: str,
+    company: Optional[str],
+    address_01: str,
+    address_02: Optional[str],
+    country: str,
+    state: str,
+    city: str,
+    zipcode: str,
+    mobile_number: str,
 ):
+    """회원가입 시 필요한 정보 입력"""
     if day:
         SignUp(page).select_day_dropdown.click()
         SignUp(page).select_day_dropdown.select_option(value=[f"{day}"])
