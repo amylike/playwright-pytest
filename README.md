@@ -1,6 +1,9 @@
 # playwright-pytest
 Demo Automation 커머스의 리그레션 테스트 자동화 프로젝트로 manual 리그레션 QA의 큰 축을 대체할 수 있는 자동화를 목표로 한다.
-playwright-pytest는 python 3.10 기반으로 UI 자동화 프레임워크로써 playwright를, 테스트 실행을 위해 pytest 프레임워크를 사용한다.  
+playwright-pytest는 python 3.10 기반으로 UI 자동화 프레임워크로써 playwright를, 테스트 실행을 위해 pytest 프레임워크를 사용한다.
+
+[![Watch the video](https://img.youtube.com/vi/Mcnf3sPuSuc/0.jpg)](https://www.youtube.com/watch?v=Mcnf3sPuSuc)
+
 
 ## 실행 전 초기 설정 가이드
 ### 사전 조건
