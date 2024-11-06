@@ -3,6 +3,7 @@ Demo Automation 커머스의 리그레션 테스트 자동화 프로젝트로 ma
 playwright-pytest는 python 3.10 기반으로 UI 자동화 프레임워크로써 playwright를, 테스트 실행을 위해 pytest 프레임워크를 사용한다.
 
 데모 영상: 
+
 [![Watch the video](https://img.youtube.com/vi/Mcnf3sPuSuc/0.jpg)](https://www.youtube.com/watch?v=Mcnf3sPuSuc)
 
 
