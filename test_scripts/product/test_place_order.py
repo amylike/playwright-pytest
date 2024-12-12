@@ -1,3 +1,5 @@
+import os
+
 import pytest
 from playwright.sync_api import Page
 
@@ -5,7 +7,7 @@ from page_objects.locators.common_locators import Menu
 from page_objects.locators.products_locators import (
     ProductOrder,
 )
-from test_script.product.conftest import (
+from test_scripts.product.conftest import (
     download_invoice,
     add_to_cart_with_info,
     get_info_from_cart,
@@ -15,11 +17,17 @@ from test_script.product.conftest import (
     search_items,
 )
 
+from dotenv import load_dotenv
+
+
+load_dotenv()  # .env 파일 로드
+
+
 TEST_DATA = [
     {
         "keyword": "blue",
-        "email": "asdf1234@gmail.com",
-        "password": "google1234",
+        "email": os.getenv("TEST_EMAIL"),
+        "password": os.getenv("TEST_PASSWORD"),
         "product_numbers": ["21", "43"],
         "message": "ASAP",
         "card_name": "Amy Kim",
@@ -40,6 +48,9 @@ def test_place_order(page: Page, test_data: dict):
     3. 카드정보 입력 후 결제 및 주문 완료한다.
     4. 인보이스를 다운로드하여 결제 금액과 비교한다.
     """
+    menu = Menu(page)
+    product_order = ProductOrder(page)
+
     # 특정 키워드를 검색하여 제품을 장바구니에 추가
     search_items(page, test_data)
     product_info_list = []
@@ -47,7 +58,7 @@ def test_place_order(page: Page, test_data: dict):
         product_info_list.append(add_to_cart_with_info(page, product_number))
 
     # 장바구니로 이동하여 제품 정보 확인
-    Menu(page).cart_nav_button.click()
+    menu.cart_nav__button.click()
     cart_product_info_list = []
     for product_number in test_data["product_numbers"]:
         cart_product_info_list.append(get_info_from_cart(page, product_number))
@@ -59,8 +70,8 @@ def test_place_order(page: Page, test_data: dict):
     # 로그인 후 주문 페이지로 이동
     check_signin_before_order(page, test_data["email"], test_data["password"])
 
-    ProductOrder(page).order_message_input.fill(test_data["message"])
-    ProductOrder(page).place_order_button.click()
+    product_order.order_message__input.fill(test_data["message"])
+    product_order.place_order__button.click()
 
     # 카드 정보 입력하여 결제
     input_card_data(
@@ -71,7 +82,7 @@ def test_place_order(page: Page, test_data: dict):
         card_expiry_month=test_data["card_expiry_month"],
         card_expiry_year=test_data["card_expiry_year"],
     )
-    ProductOrder(page).complete_payment_button.click()
-    assert ProductOrder(page).confirm_order_text.text_content() == "Order Placed!"
+    product_order.complete_payment__button.click()
+    assert product_order.confirm_order__text.text_content() == "Order Placed!"
 
     download_invoice(page, total_purchase_amount)

@@ -4,7 +4,7 @@ import string
 import pytest
 from playwright.sync_api import Page
 
-from test_script.account.conftest import input_account_data, go_to_signin_url
+from test_scripts.account.conftest import input_account_data, go_to_signin_url
 from page_objects.locators.users_locators import SignIn, SignUp
 
 
@@ -34,6 +34,9 @@ def test_signup_account(page: Page, test_data: dict):
     2. Name과 Email을 입력하여 회원가입 페이지로 이동한다.
     3. 계정 정보와 주소 정보를 입력하여 회원가입한다.
     """
+    signin = SignIn(page)
+    signup = SignUp(page)
+
     go_to_signin_url(page)
     generated = "".join(
         secrets.choice(string.ascii_uppercase + string.digits) for i in range(5)
@@ -43,15 +46,15 @@ def test_signup_account(page: Page, test_data: dict):
     )
     new_name = generated
     new_email = generated + "@test.com"
-    SignIn(page).new_name_input.fill(new_name)
-    SignIn(page).new_email_input.fill(new_email)
-    SignIn(page).signup_button.click()
+    signin.new_name__input.fill(new_name)
+    signin.new_email__input.fill(new_email)
+    signin.signup__button.click()
 
-    SignUp(page).signup_title.is_visible()
-    assert SignUp(page).name_input.input_value() == new_name
-    assert SignUp(page).email_input.input_value() == new_email
-    SignUp(page).email_input.is_disabled()
-    SignUp(page).password_input.fill(generated_password)
+    signup.signup__title.is_visible()
+    assert signup.name__input.input_value() == new_name
+    assert signup.email__input.input_value() == new_email
+    signup.email__input.is_disabled()
+    signup.password__input.fill(generated_password)
 
     input_account_data(
         page,
@@ -71,8 +74,8 @@ def test_signup_account(page: Page, test_data: dict):
         zipcode=test_data["zipcode"],
         mobile_number=test_data["mobile_number"],
     )
-    SignUp(page).create_account_button.click()
-    SignUp(page).account_created_text.is_visible()
+    signup.create_account__button.click()
+    signup.account_created__text.is_visible()
 
 
 # TODO: 더 다양한 조합으로 회원 정보를 입력하여 회원 가입하는 시나리오 추가.

@@ -6,7 +6,7 @@ from page_objects.locators.products_locators import (
     ProductDetailPage,
     CartPage,
 )
-from test_script.product.conftest import (
+from test_scripts.product.conftest import (
     list_to_product_detail,
     confirm_product_added_to_cart,
     confirmed_modal_to_cart,
@@ -27,10 +27,12 @@ def test_add_to_cart_from_detail_page(page: Page, test_data: dict):
     2. 해당 제품을 장바구니에 추가한다.
     3. 장바구니로 이동하여 제품이 담겼는지 확인한다.
     """
+    product_detail_page = ProductDetailPage(page)
+
     search_items(page, test_data)
     list_to_product_detail(page, test_data)
-    details_title_text = ProductDetailPage(page).product_title_text.text_content()
-    ProductDetailPage(page).add_to_cart_button.click()
+    details_title_text = product_detail_page.product_title__text.text_content()
+    product_detail_page.add_to_cart__button.click()
 
     confirmed_modal_to_cart(page)
     confirm_product_added_to_cart(page, details_title_text, None)
@@ -43,9 +45,11 @@ def test_add_to_cart_from_list(page: Page, test_data: dict):
     1. Product 리스트에서 특정 제품을 장바구니에 담는다.
     2. 장바구니로 이동하여 제품이 담겼는지 확인한다.
     """
+    product_list = ProductList(page)
+
     search_items(page, test_data)
-    list_title_text = ProductList(page).random_product_title_text.text_content()
-    ProductList(page).random_add_to_cart_button.click()
+    list_title_text = product_list.random_product_title__text.text_content()
+    product_list.random_add_to_cart__button.click()
 
     confirmed_modal_to_cart(page)
     confirm_product_added_to_cart(page, list_title_text, None)
@@ -59,11 +63,13 @@ def test_remove_product_from_cart(page: Page, test_data: dict):
     2. 장바구니에서 해당 제품을 제거한다.
     3. 제품이 제거된 것을 확인한다.
     """
+    cart_page = CartPage(page)
+
     test_add_to_cart_from_detail_page(page, test_data)
-    CartPage(page).remove_item_button.is_visible()
-    CartPage(page).remove_item_button.click()
-    CartPage(page).empty_cart_message_text.is_visible()
-    CartPage(page).remove_item_button.is_hidden()
+    cart_page.remove_item__button.is_visible()
+    cart_page.remove_item__button.click()
+    cart_page.empty_cart_message__text.is_visible()
+    cart_page.remove_item__button.is_hidden()
 
 
 @pytest.mark.parametrize("test_data", TEST_DATA)
@@ -74,12 +80,14 @@ def test_add_to_cart_multiple(page: Page, test_data: dict):
     2. 해당 제품을 여러개 장바구니에 추가한다.
     3. 장바구니로 이동하여 제품이 입력한 갯수대로 담겼는지 확인한다.
     """
+    product_detail_page = ProductDetailPage(page)
+
     search_items(page, test_data)
     list_to_product_detail(page, test_data)
-    details_title_text = ProductDetailPage(page).product_title_text.text_content()
-    ProductDetailPage(page).product_quantity_input.fill(test_data["quantity"])
+    details_title_text = product_detail_page.product_title__text.text_content()
+    product_detail_page.product_quantity__input.fill(test_data["quantity"])
 
-    ProductDetailPage(page).add_to_cart_button.click()
+    product_detail_page.add_to_cart__button.click()
 
     confirmed_modal_to_cart(page)
     confirm_product_added_to_cart(page, details_title_text, test_data["quantity"])
