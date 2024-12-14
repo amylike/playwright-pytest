@@ -34,6 +34,18 @@ playwright install
 pip list
 ```
 
+## 개발 가이드
+
+### Code formatting
+black이라는 코드 포매터를 사용하여 파이썬 코드 스타일을 관리합니다.
+   ```shell
+brew install black
+   ```
+black 설치 후 프로젝트 내 파일을 대상으로 실행합니다. 
+   ```shell
+black .
+   ```
+
 ## 프로젝트 환경 설정 가이드 (pytest.ini)
 ### 프로젝트 환경 설정
 프로젝트의 환경은 pytest.ini 파일에서 설정한다. 이 파일에서 addopts를 통해 브라우저의 모드(headless or headed)나 테스트 실행 속도(slowmo) 등을 조정할 수 있다.
