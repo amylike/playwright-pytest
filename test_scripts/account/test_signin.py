@@ -3,7 +3,7 @@ import string
 import pytest
 from playwright.sync_api import Page
 
-from test_script.account.conftest import input_signin_data, go_to_signin_url
+from test_scripts.account.conftest import input_signin_data, go_to_signin_url
 from page_objects.locators.common_locators import Menu
 from page_objects.locators.users_locators import SignIn
 
@@ -20,21 +20,19 @@ def test_signin_incorrect(page: Page):
     2. 이메일과 패스워드에 잘못된 정보를 입력한다.
     3. 로그인에 실패했다는 메세지를 받는다.
     """
+    signin = SignIn(page)
     go_to_signin_url(page)
 
     generated = "".join(
-        secrets.choice(string.ascii_uppercase + string.digits) for i in range(7)
+        secrets.choice(string.ascii_uppercase + string.digits) for _ in range(7)
     )
     wrong_email = generated + "@test.com"
     wrong_password = generated
-    SignIn(page).email_input.fill(wrong_email)
-    SignIn(page).password_input.fill(wrong_password)
-    SignIn(page).signin_button.click()
+    signin.email__input.fill(wrong_email)
+    signin.password__input.fill(wrong_password)
+    signin.signin__button.click()
 
-    assert (
-        SignIn(page).warning_text.text_content()
-        == "Your email or password is incorrect!"
-    )
+    assert signin.warning__text.text_content() == "Your email or password is incorrect!"
 
 
 @pytest.mark.parametrize("test_data", TEST_DATA)
@@ -56,6 +54,8 @@ def test_signout(page: Page, test_data: dict):
     1. 사용자가 로그인한다.
     2. 사용자가 로그아웃에 성공하여, 메뉴바에서 로그인 버튼이 나타난다.
     """
+    menu = Menu(page)
+
     test_signin_correct(page, test_data)
-    Menu(page).logout_nav_button.click()
-    Menu(page).account_nav_button.is_visible()
+    menu.logout_nav__button.click()
+    menu.account_nav__button.is_visible()

@@ -2,7 +2,7 @@ import pytest
 from playwright.sync_api import Page
 
 from page_objects.locators.products_locators import SidePanel, ProductList
-from test_script.product.conftest import go_to_product_url, search_items
+from test_scripts.product.conftest import go_to_product_url, search_items
 
 TEST_DATA = [{"keyword": "blue", "category": "Men", "sub_category": "Jeans"}]
 
@@ -25,18 +25,21 @@ def test_confirm_category(page: Page, test_data: dict):
     1. Category에서 특정 제품군을 선택한다.
     2. 해당 카테고리에 해당하는 제품들로만 구성되어 있는지 확인한다.
     """
-    go_to_product_url(page)
-    SidePanel(page).men_category_button.is_visible()
-    SidePanel(page).men_category_button.click()
-    SidePanel(page).jeans_sub_category_button.is_visible()
-    SidePanel(page).jeans_sub_category_button.click()
+    side_panel = SidePanel(page)
+    product_list = ProductList(page)
 
-    title_text = ProductList(page).category_title_text.text_content()
+    go_to_product_url(page)
+    side_panel.men_category__button.is_visible()
+    side_panel.men_category__button.click()
+    side_panel.jeans_sub_category__button.is_visible()
+    side_panel.jeans_sub_category__button.click()
+
+    title_text = product_list.category_title__text.text_content()
     assert (
         title_text == f'{test_data["category"]} - {test_data["sub_category"]} Products'
     )
 
-    product_titles = ProductList(page).product_title_texts.all()
+    product_titles = product_list.product_title__texts.all()
     for element in product_titles:
         text_content = element.text_content()
         assert test_data["sub_category"] in text_content

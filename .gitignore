@@ -143,7 +143,6 @@ Temporary Items
 *.icloud
 
 # Environments
-.env
 .venv
 env/
 venv/
